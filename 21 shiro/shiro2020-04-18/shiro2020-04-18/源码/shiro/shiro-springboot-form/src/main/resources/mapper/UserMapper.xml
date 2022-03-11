@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjmashibing.shiro.moduler.system.mapper.UserMapper">
+    <select id="queryAllPerms" resultType="java.lang.String">
+        select * from sys_module a,sys_user_role_ref b,sys_module c
+        <where>
+            and a.role_id=b.role_id
+            and a.module_id=c.id
+            and b.user_id =#{userId}
+        </where>
+    </select>
+    <select id="getRoleCodeList"  resultType="java.lang.String">
+        select b.code from sys_role_module_ref a,base_role b
+        <where>
+            and a.role_id=b.id
+            and a.id = #{userId}
+        </where>
+    </select>
+
+    <!--  根据用户id查询菜单列表-->
+    <select id="findMenuListByUserId" resultType="com.bjmashibing.shiro.moduler.system.entity.Module">
+        SELECT
+            c.id,c.icon,c.name,c.url,c.parent_Id
+        FROM
+            sys_user_role_ref a,
+            sys_role_module_ref b,
+            sys_module c
+        WHERE
+            a.role_Id = b.role_Id
+        AND b.module_id = c.id
+        AND c.parent_id != -1
+        AND a.user_id = #{userId}
+        AND c.type=1
+        ORDER BY c.id
+    </select>
+
+</mapper>

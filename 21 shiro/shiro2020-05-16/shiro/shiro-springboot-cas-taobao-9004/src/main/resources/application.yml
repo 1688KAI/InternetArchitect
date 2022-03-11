@@ -1,0 +1,63 @@
+# Tomcat
+server:
+    tomcat:
+        uri-encoding: UTF-8
+        max-threads: 1000
+        min-spare-threads: 30
+    port: 9004
+    ssl:
+      key-password: changeit
+      key-store: classpath:thekeystore
+      key-alias: thekeystore
+shiro:
+  cas: https://localhost:8443/cas
+  server: https://tb.com:9004
+spring:
+    mvc:
+      static-path-pattern: /static/**
+    profiles:
+        active: db
+    freemarker:
+          suffix: .html
+          request-context-attribute: request
+    jackson:
+      time-zone: GMT+8
+      date-format: yyyy-MM-dd HH:mm:ss
+  # 集群配置
+    redis:
+      expireSeconds: 60
+      timeout: 5000ms  #redis操作的超时时间
+      database: 0
+      host: 192.168.254.201
+      port: 6379
+#mybatis 插件
+mybatis-plus:
+  mapper-locations: classpath:mapper/**/*.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.bjmashibing.shiro.moduler.*.entity
+  global-config:
+    db-config:
+      #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+#      id-type: uuid
+      id-type: auto
+      #逻辑删除配置：is_delete
+      logic-delete-field: isDelete
+    #      id-type: id_worker
+    #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+    field-strategy: 2
+    #驼峰下划线转换
+    db-column-underline: true
+    #刷新mapper 调试神器
+    refresh-mapper: true
+    #数据库大写下划线转换
+    #capital-mode: true
+    #序列接口实现类配置
+    #    key-generator: com.baomidou.springboot.xxx
+    #自定义填充策略接口实现
+    #    meta-object-handler: com.baomidou.springboot.xxx
+    #自定义SQL注入器
+  #    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    call-setters-on-nulls: true
